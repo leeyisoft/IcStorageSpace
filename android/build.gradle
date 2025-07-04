@@ -2,22 +2,30 @@ group 'com.icstoragespace.ic_storage_space'
 version '1.1-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.9.25'
+    ext {
+        kotlin_version = '2.1.10'
+        agp_version = '8.7.3'
+    }
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.1'
+        classpath("com.android.tools.build:gradle:$agp_version")
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 rootProject.allprojects {
     repositories {
+        // 优先国内源，避免 TLS 限制
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
         google()
-        jcenter()
+        mavenCentral()
+        gradlePluginPortal()
     }
 }
 
@@ -26,18 +34,15 @@ apply plugin: 'kotlin-android'
 
 android {
     namespace "com.icstoragespace.ic_storage_space"
-    compileSdkVersion 34
+    compileSdkVersion 35
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
     defaultConfig {
-        minSdkVersion 23
+        minSdkVersion 21
     }
 
-    kotlinOptions {
-        jvmTarget = '17'
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
